@@ -10,6 +10,8 @@ import android.widget.Button;
 
 public class adminLogin extends AppCompatActivity {
     Button logout;
+    Button allOrders;
+    Button report;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -78,6 +80,25 @@ public class adminLogin extends AppCompatActivity {
             }
         });
 
+        allOrders = findViewById(R.id.all_ord);
+        allOrders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i = new Intent(adminLogin.this,allOrders.class);
+                startActivity(i);
+            }
+        });
+
+        report = findViewById(R.id.bus_repo);
+        report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i = new Intent(adminLogin.this,businessReport.class);
+                startActivity(i);
+            }
+        });
     }
     public void onBackPressed()
     {

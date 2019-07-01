@@ -13,7 +13,7 @@ public class menu_orders extends SQLiteOpenHelper {
 
     public menu_orders(Context context)
     {
-        super(context, dbName, null, 3);
+        super(context, dbName, null, 4);
     }
 
     @Override
@@ -21,6 +21,7 @@ public class menu_orders extends SQLiteOpenHelper {
     {
         db.execSQL("CREATE TABLE menu (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Price TEXT)");
         db.execSQL("CREATE TABLE currentOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, item_id INTEGER , quantity INTEGER )");
+        db.execSQL("CREATE TABLE allOrders (ID INTEGER PRIMARY KEY AUTOINCREMENT, item_id INTEGER, quantity INTEGER, status TEXT)");
     }
 
     @Override
@@ -28,6 +29,7 @@ public class menu_orders extends SQLiteOpenHelper {
     {
         db.execSQL("DROP TABLE IF EXISTS menu");
         db.execSQL("DROP TABLE IF EXISTS currentOrder");
+        db.execSQL("DROP TABLE IF EXISTS allOrders");
         onCreate(db);
     }
 
@@ -38,6 +40,22 @@ public class menu_orders extends SQLiteOpenHelper {
         values.put("Name",name);
         values.put("Price",price);
         long result = db.insert("menu",null,values);
+        if(result == -1)
+        {
+            return false;
+        }
+        else
+            return true;
+    }
+
+    public boolean insertAllOrder(int id, int quantity)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("item_id",id);
+        values.put("quantity",quantity);
+        values.put("status","processing");
+        long result = db.insert("allOrders",null,values);
         if(result == -1)
         {
             return false;
@@ -59,6 +77,13 @@ public class menu_orders extends SQLiteOpenHelper {
         }
         else
             return true;
+    }
+
+    public Cursor getAllOrderData()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select allOrders.ID, menu.Name,allOrders.quantity,status,menu.Price,menu.ID  from allOrders JOIN menu WHERE allOrders.item_id = menu.ID",null);
+        return res;
     }
 
     public Cursor getData()

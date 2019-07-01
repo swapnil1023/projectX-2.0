@@ -149,4 +149,25 @@
         app:layout_constraintBottom_toBottomOf="@+id/quantityRecep"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <TextView
+        android:id="@+id/changePassRecep"
+        android:layout_width="112dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="16dp"
+        android:text="Change Password"
+        android:textAlignment="center"
+        android:textColor="#E91E63"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/divider3"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/placeOrder"
+        android:layout_width="119dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="25dp"
+        android:text="PLACE ORDER"
+        app:layout_constraintBottom_toBottomOf="@+id/nameRecep"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

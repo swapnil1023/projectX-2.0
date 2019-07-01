@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".receptionPortal"></activity>
+        <activity android:name=".businessReport"></activity>
+        <activity android:name=".allOrders" />
+        <activity android:name=".receptionPortal" />
         <activity android:name=".menu" />
         <activity android:name=".chefPortal" />
         <activity android:name=".changeEmpPass" />

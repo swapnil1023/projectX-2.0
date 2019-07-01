@@ -24,6 +24,8 @@ public class receptionPortal extends AppCompatActivity {
     menu_orders menu;
     ListView current;
     Button clearOrder;
+    TextView changePass;
+    Button placeOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,7 +42,22 @@ public class receptionPortal extends AppCompatActivity {
         clear = findViewById(R.id.clearRecep);
         current = findViewById(R.id.listCurrent);
         clearOrder = findViewById(R.id.clearOrder);
+        changePass= findViewById(R.id.changePassRecep);
+        placeOrder = findViewById(R.id.placeOrder);
 
+        Intent i = getIntent();
+        final String empId = i.getStringExtra("empId");
+
+        changePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i;
+                i = new Intent(receptionPortal.this, changeEmpPass.class);
+                i.putExtra("empId", empId);
+                startActivity(i);
+            }
+        });
 
         ArrayList<String> orders = new ArrayList();
         Cursor cursor1 = menu.getCurrentData();
@@ -121,6 +138,31 @@ public class receptionPortal extends AppCompatActivity {
                 arrayAdapterList = new ArrayAdapter(receptionPortal.this,android.R.layout.simple_list_item_1, orders);
                 current.setAdapter(arrayAdapterList);
                 Toast.makeText(receptionPortal.this,"Order cleared",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        placeOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Cursor cursor = menu.getCurrentData();
+                while(cursor.moveToNext())
+                {
+                    boolean isIns = menu.insertAllOrder(Integer.parseInt(menu.getId(cursor.getString(1))),Integer.parseInt(cursor.getString(2)));
+                    if (isIns)
+                        Toast.makeText(receptionPortal.this, "Order Placed", Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(receptionPortal.this, "Failed", Toast.LENGTH_SHORT).show();
+
+                    menu.clearOrder();
+                    itemName.setText("");
+                    quantity.setText("");
+                    total.setText("0");
+                    ArrayList<String> orders = new ArrayList();
+                    final ArrayAdapter arrayAdapterList;
+                    arrayAdapterList = new ArrayAdapter(receptionPortal.this,android.R.layout.simple_list_item_1, orders);
+                    current.setAdapter(arrayAdapterList);
+                }
             }
         });
     }

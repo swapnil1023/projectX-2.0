@@ -14,21 +14,35 @@ public class chefPortal extends AppCompatActivity {
     TextView name;
     TextView price;
     Button showMenu;
+    TextView changePass;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chef_portal);
 
-        Intent i = getIntent();
-        final String empId = i.getStringExtra("empId");
-        // TODO link it to change employee password change
+
 
         add = findViewById(R.id.addChef);
         name = findViewById(R.id.itemNameChef);
         price = findViewById(R.id.priceChef);
         showMenu = findViewById(R.id.showMenu);
         menu = new menu_orders(this);
+        changePass = findViewById(R.id.changePassChef);
+
+        Intent i = getIntent();
+        final String empId = i.getStringExtra("empId");
+
+        changePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i;
+                i = new Intent(chefPortal.this, changeEmpPass.class);
+                i.putExtra("empId", empId);
+                startActivity(i);
+            }
+        });
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
