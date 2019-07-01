@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.projectx">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/fish_logo"
+        android:label="BBS Foodies"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".receptionPortal"></activity>
+        <activity android:name=".menu" />
+        <activity android:name=".chefPortal" />
+        <activity android:name=".changeEmpPass" />
+        <activity android:name=".changeAdminPass" />
+        <activity android:name=".deleteEmployee" />
+        <activity android:name=".allEmployees" />
+        <activity android:name=".newEmployee" />
+        <activity android:name=".adminPass" />
+        <activity android:name=".empLogin" />
+        <activity android:name=".adminLogin" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

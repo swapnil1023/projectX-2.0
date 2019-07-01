@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">projectX</string>
+    <string-array name="empType">
+        <item>Receptionist</item>
+        <item>Chef</item>
+        <item>Delivery person</item>
+    </string-array>
+
+    <string name="title_activity_receptionist_portal">receptionistPortal</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="title_activity_sample">sample</string>
+
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+</resources>
