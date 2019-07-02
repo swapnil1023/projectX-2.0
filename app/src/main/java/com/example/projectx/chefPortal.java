@@ -1,12 +1,17 @@
 package com.example.projectx;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class chefPortal extends AppCompatActivity {
     menu_orders menu;
@@ -15,6 +20,7 @@ public class chefPortal extends AppCompatActivity {
     TextView price;
     Button showMenu;
     TextView changePass;
+    ListView currentOrders;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -29,6 +35,7 @@ public class chefPortal extends AppCompatActivity {
         showMenu = findViewById(R.id.showMenu);
         menu = new menu_orders(this);
         changePass = findViewById(R.id.changePassChef);
+        currentOrders = findViewById(R.id.currentOrdersChef);
 
         Intent i = getIntent();
         final String empId = i.getStringExtra("empId");
@@ -67,5 +74,16 @@ public class chefPortal extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        ArrayList<String> orders = new ArrayList<>();
+        Cursor cursor = menu.getAllOrderData();
+        ArrayAdapter adapter;
+
+        while(cursor.moveToNext())
+        {
+            orders.add("Item Name: "+cursor.getString(1) + "\nQuantity: "+cursor.getString(2));
+        }
+        adapter = new ArrayAdapter(chefPortal.this,android.R.layout.simple_list_item_1, orders);
+        currentOrders.setAdapter(adapter);
     }
 }
