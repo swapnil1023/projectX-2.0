@@ -4,7 +4,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/fish_logo"
+        android:icon="@mipmap/bbs_launcher_icon_round"
         android:label="BBS Foodies"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
