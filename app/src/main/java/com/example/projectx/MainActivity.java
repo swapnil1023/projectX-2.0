@@ -2,6 +2,7 @@ package com.example.projectx;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,16 +12,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class MainActivity extends AppCompatActivity {
     Button b1;
     Button b2;
-    EmpData password =new EmpData(this);
+    //EmpData password =new EmpData(this);
+    FirebaseFirestore password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        password = FirebaseFirestore.getInstance();
 
         b1= findViewById(R.id.admin);
         b2=findViewById(R.id.emp);
@@ -38,20 +47,34 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which)
                             {
-                                EditText admin_pass = vi.findViewById(R.id.admin_pass);
+                                final EditText admin_pass = vi.findViewById(R.id.admin_pass);
+                                password.collection("admin password").document("password").get()
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot)
+                                            {
+                                                String pass = admin_pass.getText().toString();
+                                                if(pass.equals(documentSnapshot.getString("password")))
+                                                {
+                                                    Intent in;
+                                                    in = new Intent(MainActivity.this,adminLogin.class);
+                                                    startActivity(in);
+                                                    Toast.makeText(MainActivity.this,"Welcome",Toast.LENGTH_SHORT).show();
+                                                }
+                                                 else
+                                                {
+                                                    Toast.makeText(MainActivity.this,"Wrong Password Try Again",Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e)
+                                            {
 
-                                String pass = admin_pass.getText().toString();
-                                if(pass.equals(password.getPass()))
-                                {
-                                    Intent in;
-                                    in = new Intent(MainActivity.this,adminLogin.class);
-                                    startActivity(in);
-                                    Toast.makeText(MainActivity.this,"Welcome",Toast.LENGTH_SHORT).show();
-                                }
-                                else
-                                {
-                                    Toast.makeText(MainActivity.this,"Wrong Password Try Again",Toast.LENGTH_SHORT).show();
-                                }
+                                            }
+                                        });
+
                             }
                         })
                         .setNegativeButton("Clear", new DialogInterface.OnClickListener() {
