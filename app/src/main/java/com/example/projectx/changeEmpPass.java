@@ -1,12 +1,22 @@
 package com.example.projectx;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class changeEmpPass extends AppCompatActivity {
 
@@ -16,6 +26,8 @@ public class changeEmpPass extends AppCompatActivity {
     TextView newPass2;
     Button change;
     Button clear;
+    FirebaseFirestore employee;
+    DocumentReference empRef;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -24,6 +36,9 @@ public class changeEmpPass extends AppCompatActivity {
 
         Intent i = getIntent();
         final String empId = i.getStringExtra("empId");
+
+        employee = FirebaseFirestore.getInstance();
+        empRef = employee.collection("employees").document(empId);
 
         change = findViewById(R.id.empPassChange);
         newPass= findViewById(R.id.empNewPass);
@@ -38,21 +53,42 @@ public class changeEmpPass extends AppCompatActivity {
                     Toast.makeText(changeEmpPass.this,"Please enter all the fields",Toast.LENGTH_SHORT).show();
                 else
                 {
-                    if(oldPass.getText().toString().equals(pass.getEmpPass(empId)))
-                    {
-                        if (newPass.getText().toString().equals(newPass2.getText().toString()))
-                        {
-                            boolean isIns = pass.changeEmpPass(newPass.getText().toString(),empId);
-                            if (isIns)
-                                Toast.makeText(changeEmpPass.this, "Password Changed to " + pass.getEmpPass(empId), Toast.LENGTH_SHORT).show();
-                            else
-                                Toast.makeText(changeEmpPass.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                            Toast.makeText(changeEmpPass.this,"The Re-entered Password Doesn't Match The New Password",Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                        Toast.makeText(changeEmpPass.this,"Incorrect old password",Toast.LENGTH_SHORT).show();
+                    empRef.get()
+                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot)
+                                {
+                                    if(oldPass.getText().toString().equals(documentSnapshot.getString("password")))
+                                    {
+                                        if (newPass.getText().toString().equals(newPass2.getText().toString()))
+                                        {
+                                            Map passMap = new HashMap();
+                                            passMap.put("password",newPass.getText().toString());
+
+                                            empRef.update(passMap);
+                                            Toast.makeText(changeEmpPass.this, "Password Changed", Toast.LENGTH_SHORT).show();
+                                            /*boolean isIns = pass.changeEmpPass(newPass.getText().toString(),empId);
+                                            if (isIns)
+                                                Toast.makeText(changeEmpPass.this, "Password Changed to " + pass.getEmpPass(empId), Toast.LENGTH_SHORT).show();
+                                            else
+                                                Toast.makeText(changeEmpPass.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();*/
+                                            //TODO take care of this
+                                        }
+                                        else
+                                            Toast.makeText(changeEmpPass.this,"The Re-entered Password Doesn't Match The New Password",Toast.LENGTH_SHORT).show();
+                                    }
+                                    else
+                                        Toast.makeText(changeEmpPass.this,"Incorrect old password",Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e)
+                                {
+
+                                }
+                            });
+
 
                 }
             }

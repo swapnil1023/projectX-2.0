@@ -1,6 +1,7 @@
 package com.example.projectx;
 
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,18 +13,28 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class newEmployee extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     EmpData empdata= new EmpData(this);
     TextView name;
     Button create;
+    FirebaseFirestore employee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_employee);
+
+        employee =FirebaseFirestore.getInstance();
 
         final Spinner spin = findViewById(R.id.spinner2);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.empType, android.R.layout.simple_spinner_item);
@@ -42,6 +53,28 @@ public class newEmployee extends AppCompatActivity implements AdapterView.OnItem
                    Toast.makeText(newEmployee.this,"Employee Added",Toast.LENGTH_SHORT).show();
                else
                    Toast.makeText(newEmployee.this,"Employee Addition Failed",Toast.LENGTH_SHORT).show();
+
+                Map empMap= new HashMap<>();
+                empMap.put("type",spin.getSelectedItemPosition());
+                empMap.put("password","0000");
+                employee.collection("employees")
+                        .document(name.getText().toString())
+                        .set(empMap)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid)
+                            {
+                                Toast.makeText(newEmployee.this,"added to firebase",Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e)
+                            {
+                                Toast.makeText(newEmployee.this,"failed to add it on firebase",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                name.setText("");
             }
         });
