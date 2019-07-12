@@ -38,7 +38,6 @@ public class menu extends AppCompatActivity {
     TextView price;
     Button add;
     FirebaseFirestore fMenu;
-    static int idNum=1;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -192,7 +191,6 @@ public class menu extends AppCompatActivity {
                                                 public void onSuccess(Void aVoid)
                                                 {
                                                     Toast.makeText(menu.this, "Item Added to firestore", Toast.LENGTH_SHORT).show();
-                                                    idNum++;
                                                 }
                                             })
                                             .addOnFailureListener(new OnFailureListener() {
