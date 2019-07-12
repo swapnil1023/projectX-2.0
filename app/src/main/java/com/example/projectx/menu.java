@@ -3,6 +3,7 @@ package com.example.projectx;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +18,13 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class menu extends AppCompatActivity {
 
@@ -30,6 +37,8 @@ public class menu extends AppCompatActivity {
     TextView name;
     TextView price;
     Button add;
+    FirebaseFirestore fMenu;
+    static int idNum=1;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -41,7 +50,9 @@ public class menu extends AppCompatActivity {
         delete = findViewById(R.id.deleteItemMenu);
         add = findViewById(R.id.addItemMenu);
 
-        Intent i = getIntent();
+        fMenu = FirebaseFirestore.getInstance();
+
+        final Intent i = getIntent();
         final String type = i.getStringExtra("empType");
 
         if(type.equals("1"))
@@ -147,7 +158,7 @@ public class menu extends AppCompatActivity {
                 alert.show();
             }
         });
-
+        
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -159,6 +170,10 @@ public class menu extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which)
                             {
+
+                                Map<String,String> menuMap = new HashMap();
+                                menuMap.put("name",name.getText().toString());
+                                menuMap.put("price",price.getText().toString());
                                 if(name.getText().toString().equals("")  || price.getText().toString().equals(""))
                                 {
                                     Toast.makeText(menu.this,"Please fill all the fields",Toast.LENGTH_SHORT).show();
@@ -169,6 +184,25 @@ public class menu extends AppCompatActivity {
 
                                 else
                                 {
+                                    fMenu.collection("menu")
+                                            .document(name.getText().toString())
+                                            .set(menuMap)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid)
+                                                {
+                                                    Toast.makeText(menu.this, "Item Added to firestore", Toast.LENGTH_SHORT).show();
+                                                    idNum++;
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e)
+                                                {
+                                                    Toast.makeText(menu.this, "Item Addition failed to firestore", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
                                     boolean isIns = menu.insertData(name.getText().toString(), price.getText().toString());
                                     if (isIns)
                                         Toast.makeText(menu.this, "Item Added", Toast.LENGTH_SHORT).show();
