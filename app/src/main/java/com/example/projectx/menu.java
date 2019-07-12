@@ -20,11 +20,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 public class menu extends AppCompatActivity {
 
@@ -69,25 +75,57 @@ public class menu extends AppCompatActivity {
         name = viAdd.findViewById(R.id.nameAdd);
         price = viAdd.findViewById(R.id.priceAdd);
 
-        Cursor cursor = menu.getData();
-        ArrayList<classForMenu> menuList = new ArrayList();
-        while(cursor.moveToNext())
+        final ArrayList<classForMenu> menuList = new ArrayList();
+        fMenu.collection("menu").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e)
+            {
+                if(e!=null)
+                {
+                    Toast.makeText(menu.this,"some exception",Toast.LENGTH_SHORT).show();
+                }
+                for(DocumentChange menuSnap: queryDocumentSnapshots.getDocumentChanges())
+                {
+                    if(menuSnap.getType() == DocumentChange.Type.ADDED)
+                    {
+                        menuClass = new classForMenu("",menuSnap.getDocument().getId(),menuSnap.getDocument().getString("price"));
+                        menuList.add(menuClass);
+                    }
+                }
+                menuAdapter adapter = new menuAdapter(menu.this,R.layout.adapter_view_menu,menuList);
+                list.setAdapter(adapter);
+            }
+        });
+       /* while(cursor.moveToNext())
         {
             menuClass = new classForMenu(cursor.getString(0),cursor.getString(1),cursor.getString(2));
             menuList.add(menuClass);
-        }
+        }*/
+       //todo old way to create menu list
 
-        menuAdapter adapter = new menuAdapter(this,R.layout.adapter_view_menu,menuList);
-        list.setAdapter(adapter);
 
-        Cursor cursor2 = menu.getData();
-        ArrayList<String> itemName = new ArrayList<>();
-        while (cursor2.moveToNext())
-        {
-            itemName.add(cursor2.getString(1));
-            ArrayAdapter Adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, itemName);
-            drop.setAdapter(Adapter);
-        }
+        final Cursor cursor2 = menu.getData();
+        final ArrayList<String> itemName = new ArrayList<>();
+
+        fMenu.collection("menu").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e)
+            {
+                if(e!=null)
+                {
+                    Toast.makeText(menu.this,"some exception",Toast.LENGTH_SHORT).show();
+                }
+                for(DocumentChange menuSnap: queryDocumentSnapshots.getDocumentChanges())
+                {
+                    if(menuSnap.getType() == DocumentChange.Type.ADDED)
+                    {
+                        itemName.add(menuSnap.getDocument().getId());
+                    }
+                }
+                ArrayAdapter Adapter = new ArrayAdapter(menu.this,android.R.layout.simple_list_item_1, itemName);
+                drop.setAdapter(Adapter);
+            }
+        });
 
         drop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -119,28 +157,19 @@ public class menu extends AppCompatActivity {
                                 else
                                     {
 
-                                        try
-                                        {
-                                            String id = itemId.getText().toString();
-                                            String str = menu.getName(id);
-                                            int deletedRows = menu.delete(itemId.getText().toString());
-                                            if (deletedRows > 0)
-                                                Toast.makeText(menu.this, str + " Removed", Toast.LENGTH_SHORT).show();
-                                            else
-                                                Toast.makeText(menu.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                                            itemId.setText("");
-                                            Intent intent = getIntent();
-                                            finish();
-                                            startActivity(intent);
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Toast.makeText(menu.this,"Please enter a valid Item ID or use the search bar",Toast.LENGTH_LONG).show();
-                                            itemId.setText("");
-                                            Intent intent = getIntent();
-                                            finish();
-                                            startActivity(intent);
-                                        }
+                                        fMenu.collection("menu").document(drop.getText().toString()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid)
+                                            {
+                                                Toast.makeText(menu.this, drop.getText().toString() + " Removed", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+
+                                        itemId.setText("");
+                                        Intent intent = getIntent();
+                                        finish();
+                                        startActivity(intent);
+
                                 }
                             }
                         })
@@ -206,9 +235,8 @@ public class menu extends AppCompatActivity {
                                         Toast.makeText(menu.this, "Item Added", Toast.LENGTH_SHORT).show();
                                     else
                                         Toast.makeText(menu.this, "Item Addition Failed", Toast.LENGTH_SHORT).show();
-                                    Intent intent = getIntent();
-                                    finish();
-                                    startActivity(intent);
+
+                                    //todo replace this with that removeView() function
 
                                 }
 
