@@ -209,6 +209,7 @@ public class menu extends AppCompatActivity {
                                     Intent intent = getIntent();
                                     finish();
                                     startActivity(intent);
+
                                 }
 
                             }
