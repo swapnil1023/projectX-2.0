@@ -6,6 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".menu">
 
+    <TextView
+        android:id="@+id/itemPrice2"
+        android:layout_width="176dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="Price"
+        android:textColor="#000303"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/divider5"
+        app:layout_constraintEnd_toEndOf="@+id/lvMenu"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/itemName2"
+        android:layout_width="176dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="Item"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/divider5"
+        app:layout_constraintStart_toStartOf="@+id/lvMenu"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
     <Button
         android:id="@+id/addItemMenu"
         android:layout_width="wrap_content"
@@ -25,9 +53,8 @@
         android:layout_width="350dp"
         android:layout_height="384dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,44 +74,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="45dp"
-        android:layout_marginBottom="20dp"
-        android:text="Item ID"
-        app:layout_constraintBottom_toTopOf="@+id/lvMenu"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-    <TextView
-        android:id="@+id/textView15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="102dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="102dp"
-        android:layout_marginBottom="20dp"
-        android:text="ITEM"
-        app:layout_constraintBottom_toTopOf="@+id/lvMenu"
-        app:layout_constraintEnd_toStartOf="@+id/textView16"
-        app:layout_constraintStart_toEndOf="@+id/textView14"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="20dp"
-        android:text="Price"
-        app:layout_constraintBottom_toTopOf="@+id/lvMenu"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
     <View
         android:id="@+id/divider5"
         android:layout_width="395dp"
@@ -95,7 +84,7 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/itemPrice2" />
 
     <Button
         android:id="@+id/deleteItemMenu"
@@ -110,4 +99,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lvMenu"
         app:layout_constraintVertical_bias="0.937" />
+
 </android.support.constraint.ConstraintLayout>

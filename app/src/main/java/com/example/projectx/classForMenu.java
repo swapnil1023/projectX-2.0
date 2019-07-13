@@ -6,9 +6,8 @@ public class classForMenu {
     private String name;
     private String price;
 
-    public classForMenu(String id1, String name1, String price1)
+    public classForMenu(String name1, String price1)
     {
-        id = id1;
         name = name1;
         price = price1;
     }

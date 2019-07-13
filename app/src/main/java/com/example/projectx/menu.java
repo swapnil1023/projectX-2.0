@@ -88,7 +88,7 @@ public class menu extends AppCompatActivity {
                 {
                     if(menuSnap.getType() == DocumentChange.Type.ADDED)
                     {
-                        menuClass = new classForMenu("",menuSnap.getDocument().getId(),menuSnap.getDocument().getString("price"));
+                        menuClass = new classForMenu(menuSnap.getDocument().getId(),menuSnap.getDocument().getString("price"));
                         menuList.add(menuClass);
                     }
                 }
