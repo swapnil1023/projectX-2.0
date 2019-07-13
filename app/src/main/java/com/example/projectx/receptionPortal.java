@@ -12,7 +12,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
+
+import javax.annotation.Nullable;
 
 public class receptionPortal extends AppCompatActivity {
 
@@ -44,6 +53,7 @@ public class receptionPortal extends AppCompatActivity {
         clearOrder = findViewById(R.id.clearOrder);
         changePass= findViewById(R.id.changePassRecep);
         placeOrder = findViewById(R.id.placeOrder);
+        final FirebaseFirestore fMenu;
 
         Intent i = getIntent();
         final String empId = i.getStringExtra("empId");
@@ -59,6 +69,8 @@ public class receptionPortal extends AppCompatActivity {
             }
         });
 
+        fMenu = FirebaseFirestore.getInstance();
+
         ArrayList<String> orders = new ArrayList();
         Cursor cursor1 = menu.getCurrentData();
         ArrayAdapter arrayAdapterList;
@@ -69,14 +81,34 @@ public class receptionPortal extends AppCompatActivity {
         arrayAdapterList = new ArrayAdapter(receptionPortal.this,android.R.layout.simple_list_item_1, orders);
         current.setAdapter(arrayAdapterList);
 
-        Cursor cursor = menu.getData();
-        ArrayList<String> name = new ArrayList<>();
-        while (cursor.moveToNext())
+
+        final ArrayList<String> name = new ArrayList<>();
+        fMenu.collection("menu").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e)
+            {
+                if(e!=null)
+                {
+                    Toast.makeText(receptionPortal.this,"some exception",Toast.LENGTH_SHORT).show();
+                }
+                for(DocumentChange menuSnap: queryDocumentSnapshots.getDocumentChanges())
+                {
+                    if(menuSnap.getType() == DocumentChange.Type.ADDED)
+                    {
+                        name.add(menuSnap.getDocument().getId());
+                    }
+                }
+                ArrayAdapter Adapter = new ArrayAdapter(receptionPortal.this,android.R.layout.simple_list_item_1, name);
+                itemName.setAdapter(Adapter);
+            }
+        });
+
+       /* while (cursor.moveToNext())
         {
             name.add(cursor.getString(1));
             ArrayAdapter Adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, name);
             itemName.setAdapter(Adapter);
-        }
+        }*/
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,18 +121,27 @@ public class receptionPortal extends AppCompatActivity {
 
                 else
                 {
-                    String id = menu.getId(itemName.getText().toString());
-                    int price = Integer.parseInt(menu.getPrice(id));
-                    int quan = Integer.parseInt(quantity.getText().toString());
-                    boolean isIns = menu.insertCurrent(Integer.parseInt(id),quan);
+                    String name = itemName.getText().toString();
+                    final int quan = Integer.parseInt(quantity.getText().toString());
+                    fMenu.collection("menu").document(name).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e)
+                        {
+                            int price;
+                             price = Integer.parseInt(documentSnapshot.getString("price"));
+                            int orderTotal = Integer.parseInt(total.getText().toString());
+                            orderTotal+= price*quan;
+                            total.setText(String.valueOf(orderTotal));
+                        }
+                    });
+
+                    boolean isIns = menu.insertCurrent(name,quan);
                     if (isIns)
                         Toast.makeText(receptionPortal.this, "Item Added", Toast.LENGTH_SHORT).show();
                     else
                         Toast.makeText(receptionPortal.this, "Item Addition Failed", Toast.LENGTH_SHORT).show();
 
-                    int orderTotal = Integer.parseInt(total.getText().toString());
-                    orderTotal+= price*quan;
-                    total.setText(String.valueOf(orderTotal));
+
                     itemName.setText("");
                     quantity.setText("");
 

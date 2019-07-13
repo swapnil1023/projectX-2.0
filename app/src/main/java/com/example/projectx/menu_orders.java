@@ -13,14 +13,14 @@ public class menu_orders extends SQLiteOpenHelper {
 
     public menu_orders(Context context)
     {
-        super(context, dbName, null, 4);
+        super(context, dbName, null, 5);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db)
     {
         db.execSQL("CREATE TABLE menu (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Price TEXT)");
-        db.execSQL("CREATE TABLE currentOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, item_id INTEGER , quantity INTEGER )");
+        db.execSQL("CREATE TABLE currentOrder (ID INTEGER PRIMARY KEY AUTOINCREMENT, item_name TEXT , quantity INTEGER )");
         db.execSQL("CREATE TABLE allOrders (ID INTEGER PRIMARY KEY AUTOINCREMENT, item_id INTEGER, quantity INTEGER, status TEXT)");
     }
 
@@ -64,11 +64,11 @@ public class menu_orders extends SQLiteOpenHelper {
             return true;
     }
 
-    public boolean insertCurrent(int id , int quantity)
+    public boolean insertCurrent(String name , int quantity)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("item_id",id);
+        values.put("item_name",name);
         values.put("quantity",quantity);
         long result = db.insert("currentOrder",null,values);
         if(result == -1)
@@ -82,7 +82,7 @@ public class menu_orders extends SQLiteOpenHelper {
     public Cursor getAllOrderData()
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select allOrders.ID, menu.Name,allOrders.quantity,status,menu.Price,menu.ID  from allOrders JOIN menu WHERE allOrders.item_id = menu.ID",null);
+        Cursor res = db.rawQuery("select allOrders.ID, menu.Name,allOrders.quantity,status,menu.Price,menu.ID  from allOrders JOIN menu WHERE allOrders.item_name = menu.Name",null);
         return res;
     }
 
@@ -96,7 +96,7 @@ public class menu_orders extends SQLiteOpenHelper {
     public Cursor getCurrentData()
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select currentOrder.id, menu.name,quantity from currentOrder JOIN menu WHERE menu.ID = currentOrder.item_id",null);
+        Cursor res = db.rawQuery("select * from currentOrder",null);
         return res;
     }
 

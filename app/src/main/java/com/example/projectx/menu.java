@@ -147,7 +147,7 @@ public class menu extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which)
                             {
-                                if(itemId.getText().toString().equals(""))
+                                if(drop.getText().toString().equals(""))
                                 {
                                     Toast.makeText(menu.this, " I am not going to read your mind, you'll have to enter the details!!", Toast.LENGTH_LONG).show();
                                     Intent intent = getIntent();
