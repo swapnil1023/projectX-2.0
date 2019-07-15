@@ -103,13 +103,6 @@ public class receptionPortal extends AppCompatActivity {
             }
         });
 
-       /* while (cursor.moveToNext())
-        {
-            name.add(cursor.getString(1));
-            ArrayAdapter Adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, name);
-            itemName.setAdapter(Adapter);
-        }*/
-
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)

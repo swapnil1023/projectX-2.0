@@ -135,5 +135,4 @@ public class menu_orders extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM currentOrder");
     }
-
 }
