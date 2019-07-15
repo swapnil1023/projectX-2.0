@@ -67,12 +67,6 @@ public class changeEmpPass extends AppCompatActivity {
 
                                             empRef.update(passMap);
                                             Toast.makeText(changeEmpPass.this, "Password Changed", Toast.LENGTH_SHORT).show();
-                                            /*boolean isIns = pass.changeEmpPass(newPass.getText().toString(),empId);
-                                            if (isIns)
-                                                Toast.makeText(changeEmpPass.this, "Password Changed to " + pass.getEmpPass(empId), Toast.LENGTH_SHORT).show();
-                                            else
-                                                Toast.makeText(changeEmpPass.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();*/
-                                            //TODO take care of this
                                         }
                                         else
                                             Toast.makeText(changeEmpPass.this,"The Re-entered Password Doesn't Match The New Password",Toast.LENGTH_SHORT).show();

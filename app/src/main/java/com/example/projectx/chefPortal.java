@@ -75,7 +75,7 @@ public class chefPortal extends AppCompatActivity {
             }
         });
 
-        ArrayList<String> orders = new ArrayList<>();
+       /* ArrayList<String> orders = new ArrayList<>();
         Cursor cursor = menu.getAllOrderData();
         ArrayAdapter adapter;
 
@@ -84,6 +84,8 @@ public class chefPortal extends AppCompatActivity {
             orders.add("Item Name: "+cursor.getString(1) + "\nQuantity: "+cursor.getString(2));
         }
         adapter = new ArrayAdapter(chefPortal.this,android.R.layout.simple_list_item_1, orders);
-        currentOrders.setAdapter(adapter);
+        currentOrders.setAdapter(adapter);*/
+
+       //todo take care of this after fixing order firestore to show th current orders
     }
 }
