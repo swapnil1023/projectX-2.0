@@ -2,6 +2,7 @@ package com.example.projectx;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,14 +13,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -72,7 +82,7 @@ public class receptionPortal extends AppCompatActivity {
         fMenu = FirebaseFirestore.getInstance();
 
         ArrayList<String> orders = new ArrayList();
-        Cursor cursor1 = menu.getCurrentData();
+        final Cursor cursor1 = menu.getCurrentData();
         ArrayAdapter arrayAdapterList;
         while(cursor1.moveToNext())
         {
@@ -179,15 +189,72 @@ public class receptionPortal extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                Cursor cursor = menu.getCurrentData();
-                while(cursor.moveToNext())
-                {
-                    boolean isIns = menu.insertAllOrder(Integer.parseInt(menu.getId(cursor.getString(1))),Integer.parseInt(cursor.getString(2)));
+                final Cursor cursor = menu.getCurrentData();
+                DocumentReference idRef = fMenu.collection("docID").document("Current");
+                cursor.moveToFirst();
+                while(cursor.moveToNext() && !cursor.isAfterLast()) {
+
+                            Task<DocumentSnapshot>  ds = idRef.get();
+
+                ds.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot)
+                                {
+                                    int ID = Integer.parseInt(documentSnapshot.get("Current").toString());
+
+                                    Map ordMap= Collections.EMPTY_MAP;
+                                    ordMap.put("Item",cursor.getString(1));
+                                    ordMap.put("Quantity",Integer.parseInt(cursor.getString(2)));
+                                    fMenu.collection("All Orders")
+                                            .document(String.valueOf(ID))
+                                            .set(ordMap)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid)
+                                                {
+                                                    Toast.makeText(receptionPortal.this,"added to firebase",Toast.LENGTH_SHORT).show();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e)
+                                                {
+                                                    Toast.makeText(receptionPortal.this,"failed to add it on firebase",Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
+
+                                    Map newId = new HashMap<>();
+                                    newId.put("Current",String.valueOf(ID +1));
+                                    fMenu.collection("docID")
+                                            .document("Current")
+                                            .set(newId)
+                                            .addOnSuccessListener(new OnSuccessListener() {
+                                                @Override
+                                                public void onSuccess(Object o)
+                                                {
+                                                    Toast.makeText(receptionPortal.this,"done",Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e)
+                                {
+                                    Toast.makeText(receptionPortal.this,"failed",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            //cursor.moveToNext();
+
+                    /*boolean isIns = menu.insertAllOrder(Integer.parseInt(menu.getId(cursor.getString(1))), Integer.parseInt(cursor.getString(2)));
                     if (isIns)
                         Toast.makeText(receptionPortal.this, "Order Placed", Toast.LENGTH_SHORT).show();
                     else
-                        Toast.makeText(receptionPortal.this, "Failed", Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(receptionPortal.this, "Failed", Toast.LENGTH_SHORT).show();*/
+                }
                     menu.clearOrder();
                     itemName.setText("");
                     quantity.setText("");
@@ -196,7 +263,6 @@ public class receptionPortal extends AppCompatActivity {
                     final ArrayAdapter arrayAdapterList;
                     arrayAdapterList = new ArrayAdapter(receptionPortal.this,android.R.layout.simple_list_item_1, orders);
                     current.setAdapter(arrayAdapterList);
-                }
             }
         });
     }

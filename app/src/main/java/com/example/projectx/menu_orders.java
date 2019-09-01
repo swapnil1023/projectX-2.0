@@ -82,7 +82,7 @@ public class menu_orders extends SQLiteOpenHelper {
     public Cursor getAllOrderData()
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select allOrders.ID, menu.Name,allOrders.quantity,status,menu.Price,menu.ID  from allOrders JOIN menu WHERE allOrders.item_name = menu.Name",null);
+        Cursor res = db.rawQuery("select allOrders.ID, menu.Name,allOrders.quantity,status,menu.Price,menu.ID  from allOrders JOIN menu WHERE allOrders.ID = menu.ID"/*todo yahi kuch jhol hai ye name eqaul nahi kar sakte*/,null);
         return res;
     }
 
