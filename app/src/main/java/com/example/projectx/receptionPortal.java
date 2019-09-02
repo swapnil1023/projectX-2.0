@@ -200,13 +200,14 @@ public class receptionPortal extends AppCompatActivity {
                     itemPrice = fMenu.collection("menu").document(cursor.getString(1));
                     task1 = idRef.get();
                     task2 = itemPrice.get();
-                    while(!task1.isComplete() && !task2.isComplete()) {
+                    while(!task1.isComplete() || !task2.isComplete()) {
                         try {
                             Thread.sleep(1);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
+
                     DocumentSnapshot menuSnap = task2.getResult();
                     DocumentSnapshot ds = task1.getResult();
                     int ID = Integer.parseInt(ds.get("Current").toString());
@@ -214,6 +215,7 @@ public class receptionPortal extends AppCompatActivity {
                     Map ordMap=  new HashMap<>();
                     ordMap.put("Item",cursor.getString(1));
                     ordMap.put("Quantity",Integer.parseInt(cursor.getString(2)));
+                    ordMap.put("Total Price",price*Integer.parseInt(cursor.getString(2)));
                     fMenu.collection("All Orders")
                             .document(String.valueOf(ID))
                             .set(ordMap)
@@ -249,67 +251,6 @@ public class receptionPortal extends AppCompatActivity {
                     task1 = null;
                     task2 = null;
 
-
-                          //  Task<DocumentSnapshot>  ds = idRef.get();
-
-               /* ds.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                @Override
-                                public void onSuccess(DocumentSnapshot documentSnapshot)
-                                {
-                                    int ID = Integer.parseInt(documentSnapshot.get("Current").toString());
-
-                                    Map ordMap= Collections.EMPTY_MAP;
-                                    ordMap.put("Item",cursor.getString(1));
-                                    ordMap.put("Quantity",Integer.parseInt(cursor.getString(2)));
-                                    fMenu.collection("All Orders")
-                                            .document(String.valueOf(ID))
-                                            .set(ordMap)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid)
-                                                {
-                                                    Toast.makeText(receptionPortal.this,"added to firebase",Toast.LENGTH_SHORT).show();
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e)
-                                                {
-                                                    Toast.makeText(receptionPortal.this,"failed to add it on firebase",Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-
-
-                                    Map newId = new HashMap<>();
-                                    newId.put("Current",String.valueOf(ID +1));
-                                    fMenu.collection("docID")
-                                            .document("Current")
-                                            .set(newId)
-                                            .addOnSuccessListener(new OnSuccessListener() {
-                                                @Override
-                                                public void onSuccess(Object o)
-                                                {
-                                                    Toast.makeText(receptionPortal.this,"done",Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e)
-                                {
-                                    Toast.makeText(receptionPortal.this,"failed",Toast.LENGTH_SHORT).show();
-                                }
-                            });*/
-
-                            //cursor.moveToNext();
-
-                    /*boolean isIns = menu.insertAllOrder(Integer.parseInt(menu.getId(cursor.getString(1))), Integer.parseInt(cursor.getString(2)));
-                    if (isIns)
-                        Toast.makeText(receptionPortal.this, "Order Placed", Toast.LENGTH_SHORT).show();
-                    else
-                        Toast.makeText(receptionPortal.this, "Failed", Toast.LENGTH_SHORT).show();*/
                 }
                     menu.clearOrder();
                     itemName.setText("");
