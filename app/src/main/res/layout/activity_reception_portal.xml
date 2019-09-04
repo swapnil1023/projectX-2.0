@@ -170,4 +170,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/nameRecep"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="65dp"
+        android:layout_marginBottom="15dp"
+        android:indeterminate="true"
+        app:layout_constraintBottom_toTopOf="@+id/divider7"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

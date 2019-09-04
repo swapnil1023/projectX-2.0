@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ public class receptionPortal extends AppCompatActivity {
     Button clearOrder;
     TextView changePass;
     Button placeOrder;
+    ProgressBar proBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -63,8 +65,10 @@ public class receptionPortal extends AppCompatActivity {
         clearOrder = findViewById(R.id.clearOrder);
         changePass= findViewById(R.id.changePassRecep);
         placeOrder = findViewById(R.id.placeOrder);
+        proBar = findViewById(R.id.progressBar);
         final FirebaseFirestore fMenu;
 
+        proBar.setVisibility(View.INVISIBLE);
         Intent i = getIntent();
         final String empId = i.getStringExtra("empId");
 
@@ -189,6 +193,7 @@ public class receptionPortal extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+                proBar.setVisibility(View.VISIBLE);
                 final Cursor cursor = menu.getCurrentData();
                 DocumentReference idRef = fMenu.collection("docID").document("Current");
                 DocumentReference itemPrice;
@@ -252,6 +257,7 @@ public class receptionPortal extends AppCompatActivity {
                     task2 = null;
 
                 }
+                    proBar.setVisibility(View.INVISIBLE);
                     menu.clearOrder();
                     itemName.setText("");
                     quantity.setText("");
