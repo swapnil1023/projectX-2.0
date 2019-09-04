@@ -1,7 +1,9 @@
 package com.example.projectx;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,13 +14,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -80,21 +87,76 @@ public class chefPortal extends AppCompatActivity {
                     if(emp.getType() == DocumentChange.Type.ADDED)
                     {
                         if(emp.getDocument().getString("status").equals("placed"))
-                            Currorders.add(emp.getDocument().getId()+"\nItem : "+ emp.getDocument().get("Item").toString()+"\nQuantity : "+emp.getDocument().get("Quantity").toString());
+                            Currorders.add("Order no: "+emp.getDocument().getId()+"\nItem : "+ emp.getDocument().get("Item").toString()+"\nQuantity : "+emp.getDocument().get("Quantity").toString());
                     }
                 }
-                ArrayAdapter arrayAdapter = new ArrayAdapter(chefPortal.this,android.R.layout.simple_list_item_1, Currorders);
-                currentOrders.setAdapter(arrayAdapter);
+
             }
         });
+
+        final ArrayAdapter arrayAdapter = new ArrayAdapter(chefPortal.this,android.R.layout.simple_list_item_1, Currorders);
+        currentOrders.setAdapter(arrayAdapter);
 
         currentOrders.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
             {
-                Toast.makeText(chefPortal.this,Currorders.get(position).charAt(0),Toast.LENGTH_SHORT).show();
+                final int orderID = orderID(Currorders.get(position).toCharArray());
+                Task<DocumentSnapshot> task1;
+                task1 = orders.collection("All Orders").document(String.valueOf(orderID)).get();
+                while(!task1.isComplete());
+                DocumentSnapshot ds = task1.getResult();
+
+                String itemName = ds.getString("Item");
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(chefPortal.this);
+                builder.setTitle("Order Prepared?")
+                        .setCancelable(true)
+                        .setMessage(ds.get("Quantity").toString()+" "+ itemName+" prepared?")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                orders.collection("All Orders").document(String.valueOf(orderID))
+                                        .get()
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot)
+                                            {
+                                                Map statusUpdate = new HashMap<>();
+                                                statusUpdate.put("status","prepared");
+                                                orders.collection("All Orders").document(String.valueOf(orderID)).update(statusUpdate);
+                                            }
+                                        });
+                                /*Intent intent = getIntent();
+                                finish();
+                                startActivity(intent);*/
+                                Currorders.remove(position);
+                                arrayAdapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton("NO",null);
+                AlertDialog alert = builder.create();
+                alert.show();
+
+                Toast.makeText(chefPortal.this,String.valueOf(orderID),Toast.LENGTH_SHORT).show();
             }
         });
 
+    }
+
+    int orderID(char a[])
+    {
+        String id ="";
+        id=id+a[10];
+        for(int i=11;i<15;i++)
+        {
+            if(a[i]>='0' && a[i]<='9')
+                id=id+a[i];
+            else
+                break;
+        }
+
+        return Integer.parseInt(id);
     }
 }
