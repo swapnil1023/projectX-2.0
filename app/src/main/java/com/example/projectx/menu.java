@@ -37,7 +37,7 @@ public class menu extends AppCompatActivity {
     ListView list;
     menu_orders menu;
     Button delete;
-    TextView itemId;
+
     AutoCompleteTextView drop;
     classForMenu menuClass;
     TextView name;
@@ -68,7 +68,7 @@ public class menu extends AppCompatActivity {
         }
 
         final View viDel = LayoutInflater.from(menu.this).inflate(R.layout.menu_delete,null);
-        itemId = viDel.findViewById(R.id.itemIdDelete);
+
         drop = viDel.findViewById(R.id.autoCompMenu);
 
         final View viAdd = LayoutInflater.from(menu.this).inflate(R.layout.menu_add,null);
@@ -127,14 +127,6 @@ public class menu extends AppCompatActivity {
             }
         });
 
-        drop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                itemId.setText(menu.getId(drop.getText().toString()));
-            }
-        });
-
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -165,7 +157,6 @@ public class menu extends AppCompatActivity {
                                             }
                                         });
 
-                                        itemId.setText("");
                                         Intent intent = getIntent();
                                         finish();
                                         startActivity(intent);
@@ -229,13 +220,6 @@ public class menu extends AppCompatActivity {
                                                     Toast.makeText(menu.this, "Item Addition failed to firestore", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
-
-                                    boolean isIns = menu.insertData(name.getText().toString(), price.getText().toString());
-                                    if (isIns)
-                                        Toast.makeText(menu.this, "Item Added", Toast.LENGTH_SHORT).show();
-                                    else
-                                        Toast.makeText(menu.this, "Item Addition Failed", Toast.LENGTH_SHORT).show();
-
                                     //todo replace this with that removeView() function
 
                                 }

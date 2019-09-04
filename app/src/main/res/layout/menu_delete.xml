@@ -6,30 +6,17 @@
     android:layout_width="300dp"
     android:layout_height="150dp">
 
-    <EditText
-        android:id="@+id/itemIdDelete"
-        android:layout_width="201dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="20dp"
-        android:ems="10"
-        android:hint="Item ID"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <AutoCompleteTextView
         android:id="@+id/autoCompMenu"
         android:layout_width="201dp"
         android:layout_height="52dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginBottom="20dp"
-        android:hint="Find Item Here"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="49dp"
+        android:layout_marginBottom="49dp"
         android:completionThreshold="1"
-        app:layout_constraintBottom_toTopOf="@+id/itemIdDelete"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:hint="Find Item Here"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -42,7 +42,7 @@ public class allOrders extends AppCompatActivity {
                 {
                     if(emp.getType() == DocumentChange.Type.ADDED)
                     {
-                        orderList.add("Order No : "+emp.getDocument().getId()+"\nItem : "+ emp.getDocument().get("Item").toString()+"\nQuantity : "+emp.getDocument().get("Quantity").toString()+"\nTotal : "+emp.getDocument().get("Total Price").toString());
+                        orderList.add("Order No : "+emp.getDocument().getId()+"\nItem : "+ emp.getDocument().get("Item").toString()+"\nQuantity : "+emp.getDocument().get("Quantity").toString()+"\nTotal : "+emp.getDocument().get("Total Price").toString()+"\nStatus : "+emp.getDocument().getString("status"));
                     }
                 }
                 ArrayAdapter arrayAdapter = new ArrayAdapter(allOrders.this,android.R.layout.simple_list_item_1, orderList);

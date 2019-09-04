@@ -221,6 +221,7 @@ public class receptionPortal extends AppCompatActivity {
                     ordMap.put("Item",cursor.getString(1));
                     ordMap.put("Quantity",Integer.parseInt(cursor.getString(2)));
                     ordMap.put("Total Price",price*Integer.parseInt(cursor.getString(2)));
+                    ordMap.put("status","placed");
                     fMenu.collection("All Orders")
                             .document(String.valueOf(ID))
                             .set(ordMap)
