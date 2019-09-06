@@ -193,13 +193,13 @@ public class receptionPortal extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                proBar.setVisibility(View.VISIBLE);
                 final Cursor cursor = menu.getCurrentData();
                 DocumentReference idRef = fMenu.collection("docID").document("Current");
                 DocumentReference itemPrice;
                 cursor.moveToFirst();
                 Task<DocumentSnapshot> task1;
                 Task<DocumentSnapshot> task2;
+                proBar.setVisibility(View.VISIBLE);
                 while(!cursor.isAfterLast()) {
 
                     itemPrice = fMenu.collection("menu").document(cursor.getString(1));
@@ -218,6 +218,7 @@ public class receptionPortal extends AppCompatActivity {
                     int ID = Integer.parseInt(ds.get("Current").toString());
                     int price = Integer.parseInt(menuSnap.get("price").toString());
                     Map ordMap=  new HashMap<>();
+                    ordMap.put("ID",ID);
                     ordMap.put("Item",cursor.getString(1));
                     ordMap.put("Quantity",Integer.parseInt(cursor.getString(2)));
                     ordMap.put("Total Price",price*Integer.parseInt(cursor.getString(2)));
@@ -250,6 +251,7 @@ public class receptionPortal extends AppCompatActivity {
                                 public void onSuccess(Object o)
                                 {
                                     Toast.makeText(receptionPortal.this,"done",Toast.LENGTH_SHORT).show();
+                                    proBar.setVisibility(View.INVISIBLE);
                                 }
                             });
 
@@ -258,7 +260,7 @@ public class receptionPortal extends AppCompatActivity {
                     task2 = null;
 
                 }
-                    proBar.setVisibility(View.INVISIBLE);
+
                     menu.clearOrder();
                     itemName.setText("");
                     quantity.setText("");

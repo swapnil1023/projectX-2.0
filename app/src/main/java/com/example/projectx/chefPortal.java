@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class chefPortal extends AppCompatActivity {
     TextView changePass;
     ListView currentOrders;
     FirebaseFirestore orders;
+    ProgressBar prog;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -42,7 +44,7 @@ public class chefPortal extends AppCompatActivity {
         setContentView(R.layout.activity_chef_portal);
 
         orders = FirebaseFirestore.getInstance();
-
+        prog = findViewById(R.id.progressBar4);
         showMenu = findViewById(R.id.showMenu);
         menu = new menu_orders(this);
         changePass = findViewById(R.id.changePassChef);
@@ -101,6 +103,7 @@ public class chefPortal extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id)
             {
+                prog.setVisibility(View.VISIBLE);
                 final int orderID = orderID(Currorders.get(position).toCharArray());
                 Task<DocumentSnapshot> task1;
                 task1 = orders.collection("All Orders").document(String.valueOf(orderID)).get();
@@ -111,7 +114,7 @@ public class chefPortal extends AppCompatActivity {
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(chefPortal.this);
                 builder.setTitle("Order Prepared?")
-                        .setCancelable(true)
+                        .setCancelable(false)
                         .setMessage(ds.get("Quantity").toString()+" "+ itemName+" prepared?")
                         .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             @Override
@@ -126,20 +129,23 @@ public class chefPortal extends AppCompatActivity {
                                                 Map statusUpdate = new HashMap<>();
                                                 statusUpdate.put("status","prepared");
                                                 orders.collection("All Orders").document(String.valueOf(orderID)).update(statusUpdate);
+                                                prog.setVisibility(View.INVISIBLE);
+                                                Toast.makeText(chefPortal.this,"Updated",Toast.LENGTH_SHORT).show();
                                             }
                                         });
-                                /*Intent intent = getIntent();
-                                finish();
-                                startActivity(intent);*/
                                 Currorders.remove(position);
                                 arrayAdapter.notifyDataSetChanged();
                             }
                         })
-                        .setNegativeButton("NO",null);
+                        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+                                prog.setVisibility(View.INVISIBLE);
+                            }
+                        });
                 AlertDialog alert = builder.create();
                 alert.show();
-
-                Toast.makeText(chefPortal.this,String.valueOf(orderID),Toast.LENGTH_SHORT).show();
             }
         });
 

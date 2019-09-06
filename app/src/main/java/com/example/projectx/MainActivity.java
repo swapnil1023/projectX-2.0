@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     Button b2;
     //EmpData password =new EmpData(this);
     FirebaseFirestore password;
+    ProgressBar prog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
         b1= findViewById(R.id.admin);
         b2=findViewById(R.id.emp);
+        prog = findViewById(R.id.progressBar2);
+        prog.setVisibility(View.INVISIBLE);
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which)
                             {
+                                prog.setVisibility(View.VISIBLE);
                                 final EditText admin_pass = vi.findViewById(R.id.admin_pass);
                                 password.collection("admin password").document("password").get()
                                         .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -59,11 +64,13 @@ public class MainActivity extends AppCompatActivity {
                                                     Intent in;
                                                     in = new Intent(MainActivity.this,adminLogin.class);
                                                     startActivity(in);
+                                                    prog.setVisibility(View.INVISIBLE);
                                                     Toast.makeText(MainActivity.this,"Welcome",Toast.LENGTH_SHORT).show();
                                                 }
                                                  else
                                                 {
                                                     Toast.makeText(MainActivity.this,"Wrong Password Try Again",Toast.LENGTH_SHORT).show();
+                                                    prog.setVisibility(View.INVISIBLE);
                                                 }
                                             }
                                         })

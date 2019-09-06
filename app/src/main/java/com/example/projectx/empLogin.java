@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ public class empLogin extends AppCompatActivity {
     TextView empId;
     TextView pass;
     Button login;
+    ProgressBar prog;
     private FirebaseFirestore employee;
     DocumentReference empRef;
     @Override
@@ -34,6 +36,7 @@ public class empLogin extends AppCompatActivity {
         setContentView(R.layout.activity_emp_login);
 
         employee = FirebaseFirestore.getInstance();
+        prog = findViewById(R.id.progressBar3);
 
         final Spinner spin = findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.empType, android.R.layout.simple_spinner_item);
@@ -69,6 +72,7 @@ public class empLogin extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+                prog.setVisibility(View.VISIBLE);
                 try
                 {
                     if(!empId.getText().toString().isEmpty())
@@ -91,6 +95,7 @@ public class empLogin extends AppCompatActivity {
                                             else
                                                 i = new Intent(empLogin.this, changeEmpPass.class);
                                             i.putExtra("empId", empId.getText().toString());
+                                            prog.setVisibility(View.INVISIBLE);
                                             startActivity(i);
                                         }
                                         else
