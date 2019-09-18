@@ -114,21 +114,6 @@ public class empLogin extends AppCompatActivity {
                         Toast.makeText(empLogin.this, "empty fields", Toast.LENGTH_SHORT).show();
 
 
-
-                    /*if (pass.getText().toString().equals(emp.getEmpPass(empId.getText().toString())) && emp.getType(empId.getText().toString()).equals(String.valueOf(spin.getSelectedItemPosition()))) {
-
-                        Toast.makeText(empLogin.this, "login successful", Toast.LENGTH_SHORT).show();
-                        Intent i;
-                        if(spin.getSelectedItemPosition() == 1)
-                             i = new Intent(empLogin.this, chefPortal.class);
-                        else if(spin.getSelectedItemPosition() == 0)
-                            i = new Intent(empLogin.this, receptionPortal.class);
-                        else
-                             i = new Intent(empLogin.this, changeEmpPass.class);
-                        i.putExtra("empId", empId.getText().toString());
-                        startActivity(i);
-                    } else
-                        Toast.makeText(empLogin.this, "Incorrect User Details", Toast.LENGTH_SHORT).show();*/
                 }
                 catch(Exception e)
                 {

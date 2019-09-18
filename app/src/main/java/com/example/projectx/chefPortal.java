@@ -128,6 +128,7 @@ public class chefPortal extends AppCompatActivity {
                                             {
                                                 Map statusUpdate = new HashMap<>();
                                                 statusUpdate.put("status","prepared");
+                                                statusUpdate.put("Prepared By",empId);
                                                 orders.collection("All Orders").document(String.valueOf(orderID)).update(statusUpdate);
                                                 prog.setVisibility(View.INVISIBLE);
                                                 Toast.makeText(chefPortal.this,"Updated",Toast.LENGTH_SHORT).show();
