@@ -57,6 +57,7 @@
         android:layout_marginStart="141dp"
         android:layout_marginTop="460dp"
         android:layout_marginEnd="141dp"
+        android:foregroundTint="#00EBDFDF"
         android:progressBackgroundTint="#00E20000"
         android:progressDrawable="@android:color/holo_red_dark"
         android:progressTint="#D60B0B"

@@ -22,6 +22,7 @@ public class allEmployees extends AppCompatActivity {
 
     ListView lv;
     EmpData empDB;
+    classForEmp empClass;
     private FirebaseFirestore employee;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,9 +34,9 @@ public class allEmployees extends AppCompatActivity {
         employee = FirebaseFirestore.getInstance();
 
         lv = findViewById(R.id.lvMenu);
-        //Cursor cursor = empDB.getData();
 
-        final ArrayList<String> name = new ArrayList();
+
+        final ArrayList<classForEmp> name = new ArrayList();
 
         employee.collection("employees").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -49,10 +50,11 @@ public class allEmployees extends AppCompatActivity {
                 {
                     if(emp.getType() == DocumentChange.Type.ADDED)
                     {
-                        name.add("Name : "+emp.getDocument().getId()+"\nType : "+ emp.getDocument().get("type").toString()+"\nPassword : "+emp.getDocument().getString("password"));
+                        empClass = new classForEmp(emp.getDocument().getId(),Integer.parseInt(emp.getDocument().get("type").toString()),emp.getDocument().getString("password"));
+                        name.add(empClass);
                     }
                 }
-                ArrayAdapter arrayAdapter = new ArrayAdapter(allEmployees.this,android.R.layout.simple_list_item_1, name);
+                empAdapter arrayAdapter = new empAdapter(allEmployees.this,R.layout.emp_adapter_layout, name);
                 lv.setAdapter(arrayAdapter);
             }
         });

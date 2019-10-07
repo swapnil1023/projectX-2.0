@@ -26,14 +26,14 @@ public class reqAdapter extends ArrayAdapter<requirementClass> {
     }
     @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parenr)
+    public View getView(int position, View convertView, ViewGroup parent)
     {
         convertView = mInflater.inflate(mResource,null);
 
         requirementClass req = reqList.get(position);
 
-        TextView title = convertView.findViewById(R.id.reqTitleText);
-        TextView description = convertView.findViewById(R.id.reqDescText);
+        TextView title = convertView.findViewById(R.id.adapterEmpName);
+        TextView description = convertView.findViewById(R.id.adapterEmpType);
 
         title.setText(req.getTitle());
         description.setText(req.getDescription());
