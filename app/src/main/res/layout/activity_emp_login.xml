@@ -8,10 +8,11 @@
 
     <TextView
         android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="163dp"
+        android:layout_height="30dp"
         android:layout_marginStart="35dp"
         android:layout_marginTop="19dp"
+        android:fontFamily="@font/bangers"
         android:text="Employee Type :"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,10 +35,12 @@
     <EditText
         android:id="@+id/empIdLogin"
         android:layout_width="282dp"
-        android:layout_height="54dp"
+        android:layout_height="41dp"
         android:layout_marginStart="60dp"
+        android:padding="10dp"
         android:layout_marginTop="72dp"
         android:layout_marginEnd="60dp"
+        android:background="@drawable/edit_text"
         android:ems="10"
         android:hint="Employee Name"
         android:inputType="textPersonName"
@@ -47,6 +50,7 @@
 
     <EditText
         android:id="@+id/empPassLogin"
+        android:padding="10dp"
         android:layout_width="283dp"
         android:layout_height="41dp"
         android:layout_marginStart="60dp"
@@ -54,6 +58,7 @@
         android:layout_marginEnd="60dp"
         android:ems="10"
         android:hint="Password"
+        android:background="@drawable/edit_text"
         android:inputType="numberPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,6 +72,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
         android:autofillHints="Employee Type"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/empPassLogin" />
@@ -75,6 +81,7 @@
         android:id="@+id/empLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/edit_text"
         android:layout_marginStart="35dp"
         android:layout_marginTop="284dp"
         android:text="Login"
@@ -86,6 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="284dp"
+        android:background="@drawable/edit_text"
         android:layout_marginEnd="35dp"
         android:text="Cancel"
         app:layout_constraintEnd_toEndOf="parent"

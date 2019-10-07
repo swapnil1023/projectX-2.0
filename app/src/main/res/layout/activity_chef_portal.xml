@@ -36,13 +36,13 @@
         android:layout_width="395dp"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="80dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentOrdersChef" />
 
     <View
         android:id="@+id/divider2"
@@ -71,20 +71,37 @@
         android:id="@+id/showMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/edit_text"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:text="MENU"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/divider" />
 
+    <Button
+        android:id="@+id/req"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/edit_text"
+        android:text="Requirements"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/divider" />
+
     <ListView
         android:id="@+id/currentOrdersChef"
         android:layout_width="392dp"
-        android:layout_height="442dp"
+        android:layout_height="400dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/edit_text"
+        android:paddingLeft="10dp"
+        android:paddingTop="20dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" >
+        app:layout_constraintTop_toBottomOf="@+id/textView11">
 
 
     </ListView>

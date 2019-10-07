@@ -34,11 +34,9 @@ public class menuAdapter extends ArrayAdapter<classForMenu> {
 
         classForMenu item = menuList.get(position);
 
-        //TextView id = convertView.findViewById(R.id.itemId);
         TextView name = convertView.findViewById(R.id.itemName);
         TextView price = convertView.findViewById(R.id.itemPrice);
 
-        //id.setText(item.getId());
         name.setText(item.getName());
         price.setText(item.getPrice());
 

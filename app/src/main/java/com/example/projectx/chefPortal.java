@@ -37,6 +37,7 @@ public class chefPortal extends AppCompatActivity {
     ListView currentOrders;
     FirebaseFirestore orders;
     ProgressBar prog;
+    Button req;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -47,6 +48,7 @@ public class chefPortal extends AppCompatActivity {
         prog = findViewById(R.id.progressBar4);
         showMenu = findViewById(R.id.showMenu);
         menu = new menu_orders(this);
+        req = findViewById(R.id.req);
         changePass = findViewById(R.id.changePassChef);
         currentOrders = findViewById(R.id.currentOrdersChef);
 
@@ -60,6 +62,15 @@ public class chefPortal extends AppCompatActivity {
                 Intent i;
                 i = new Intent(chefPortal.this, changeEmpPass.class);
                 i.putExtra("empId", empId);
+                startActivity(i);
+            }
+        });
+
+        req.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent i = new Intent(chefPortal.this,requirements.class);
                 startActivity(i);
             }
         });

@@ -15,6 +15,8 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="52dp"
         android:ems="10"
+        android:background="@drawable/edit_text"
+        android:padding="10dp"
         android:hint="Password"
         android:inputType="numberPassword"
         app:layout_constraintBottom_toBottomOf="parent"
