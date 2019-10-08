@@ -36,7 +36,7 @@
         android:layout_width="135dp"
         android:layout_height="37dp"
         android:layout_marginStart="50dp"
-        android:textColor="#E91E63"
+        android:textColor="#B3392E"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView19"
         app:layout_constraintStart_toEndOf="@+id/textView19" />
