@@ -2,7 +2,6 @@ package com.example.projectx;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,7 +49,7 @@ public class chefPortal extends AppCompatActivity {
         menu = new menu_orders(this);
         req = findViewById(R.id.req);
         changePass = findViewById(R.id.changePassChef);
-        currentOrders = findViewById(R.id.currentOrdersChef);
+        currentOrders = findViewById(R.id.preparedOrdersList);
 
         Intent i = getIntent();
         final String empId = i.getStringExtra("empId");

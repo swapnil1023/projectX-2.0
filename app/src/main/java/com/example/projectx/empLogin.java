@@ -93,7 +93,7 @@ public class empLogin extends AppCompatActivity {
                                             else if(spin.getSelectedItemPosition() == 0)
                                                 i = new Intent(empLogin.this, receptionPortal.class);
                                             else
-                                                i = new Intent(empLogin.this, changeEmpPass.class);
+                                                i = new Intent(empLogin.this, deliveryPortal.class);
                                             i.putExtra("empId", empId.getText().toString());
                                             prog.setVisibility(View.INVISIBLE);
                                             startActivity(i);

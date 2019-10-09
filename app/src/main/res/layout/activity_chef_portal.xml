@@ -42,7 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currentOrdersChef" />
+        app:layout_constraintTop_toBottomOf="@+id/preparedOrdersList" />
 
     <View
         android:id="@+id/divider2"
@@ -90,7 +90,7 @@
         app:layout_constraintTop_toTopOf="@+id/divider" />
 
     <ListView
-        android:id="@+id/currentOrdersChef"
+        android:id="@+id/preparedOrdersList"
         android:layout_width="392dp"
         android:layout_height="400dp"
         android:layout_marginStart="8dp"
